@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Lala × Joja — Our First Chapter ❤️</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Karla:wght@300;400;500;600&family=Amiri:ital@0;1&display=swap');
+
+:root {
+  --true-black: #0a0908;      
+  --ink-white: #f5f0e6;
+  --dark-1: #2b241c;          
+  --dark-2: #1c1712;
+  --dark-3: #120e0a;
+  --gold: #c9a876;
+  --gold-soft: #e3cd9e;
+  --gold-dim: #a68b60;
+  --cream: #f7f2ea;
+  --cream-deep: #ece2cd;
+  --paper: #fbf7ef;
+  --umber: #3a3229;
+  --umber-soft: #6b5f4f;
+  --shadow-soft: 0 20px 60px rgba(10, 8, 5, 0.35);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--true-black); }
+body {
+  font-family: 'Karla', sans-serif; background: var(--true-black);
+  color: var(--ink-white); overflow-x: hidden; min-height: 100vh; cursor: none;
+}
+img { max-width: 100%; display: block; object-fit: cover; }
+button { font-family: inherit; border: none; background: none; cursor: pointer; }
+input { font-family: inherit; }
+::selection { background: var(--gold); color: var(--dark-3); }
+
+.custom-cursor { position: fixed; top: 0; left: 0; width: 12px; height: 12px; background: var(--gold-soft); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, background 0.2s; box-shadow: 0 0 15px rgba(201, 168, 118, 0.6); }
+.custom-cursor.hover { width: 30px; height: 30px; background: transparent; border: 1px solid var(--gold); }
+@media (max-width: 768px) { .custom-cursor { display: none; } body { cursor: auto; } }
+
+.thread-progress { position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 9999; transform-origin: left; transform: scaleX(0); background: linear-gradient(90deg, transparent, var(--gold) 15%, var(--gold-soft) 50%, var(--gold) 85%, transparent); box-shadow: 0 0 8px rgba(201, 168, 118, 0.6); transition: transform 0.1s linear; }
+
+.stage { position: fixed; inset: 0; width: 100%; height: 100dvh; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 1.2s var(--ease-in-out); z-index: 100; }
+.stage.active { opacity: 1; visibility: visible; pointer-events: auto; }
+.stage.leaving { opacity: 0; transition: opacity 1.5s ease; }
+.stage-intro { background: var(--true-black); }
+.stage-dark { background: linear-gradient(180deg, var(--dark-1) 0%, var(--dark-2) 65%, var(--dark-3) 100%); }
+
+.intro-inner { max-width: 720px; width: 90%; text-align: center; padding: 2rem; }
+.intro-line { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-style: italic; font-size: clamp(1.4rem, 4vw, 2.2rem); color: var(--ink-white); opacity: 0; letter-spacing: 0.01em; line-height: 1.5; min-height: 1.6em; transition: opacity 1s ease; }
+.intro-letter { font-family: 'Amiri', serif; font-size: clamp(1.15rem, 3.4vw, 1.65rem); line-height: 2.1; color: var(--gold-soft); margin-top: 2.2rem; direction: rtl; max-width: 620px; margin-left: auto; margin-right: auto; }
+.intro-letter .typed-cursor { display: inline-block; width: 2px; height: 1em; background: var(--gold); margin-inline-start: 2px; animation: blink 0.9s step-end infinite; vertical-align: -0.1em; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+.ready-btn { margin-top: 3rem; font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-style: italic; color: var(--dark-3); background: var(--gold-soft); padding: 0.85rem 3rem; border-radius: 999px; opacity: 0; transform: translateY(12px); transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out), background 0.3s; letter-spacing: 0.02em; cursor: none; }
+.ready-btn.visible { animation: readyIn 1s var(--ease-out) forwards; cursor: pointer; }
+@keyframes readyIn { to { opacity: 1; transform: translateY(0); } }
+.ready-btn:hover { background: var(--gold); box-shadow: 0 0 40px 4px rgba(201, 168, 118, 0.3); }
+
+.envelope-scene { display: flex; flex-direction: column; align-items: center; gap: 2.8rem; padding: 2rem; }
+.envelope-caption { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1.05rem, 3vw, 1.3rem); color: var(--gold-dim); opacity: 0; animation: fadeUp 1s var(--ease-out) 0.3s forwards; text-align: center; }
+.envelope { position: relative; width: min(340px, 76vw); cursor: pointer; opacity: 0; animation: fadeUp 1s var(--ease-out) 0.6s forwards; transition: transform 0.4s var(--ease-out); cursor: none;}
+.envelope:hover { transform: translateY(-5px); }
+.envelope.opened { pointer-events: none; }
+.envelope-shape { position: relative; width: 100%; height: min(230px, 51vw); background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%); border-radius: 2px; box-shadow: var(--shadow-soft); display: flex; align-items: center; justify-content: center; }
+.envelope-shape::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 62%; background: linear-gradient(160deg, var(--paper) 0%, var(--cream-deep) 100%); clip-path: polygon(0 0, 50% 82%, 100% 0); transition: transform 1.2s var(--ease-in-out); transform-origin: top center; z-index: 5;}
+.envelope.opened .envelope-shape::before { transform: rotateX(180deg) translateY(2px); z-index: 1;}
+.envelope-label { position: relative; z-index: 6; font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500; color: var(--gold-dim); font-size: clamp(1.1rem, 3vw, 1.4rem); letter-spacing: 0.02em; transition: opacity 0.5s, transform 0.5s; }
+.envelope.opened .envelope-label { opacity: 0; transform: scale(0.9); }
+.envelope-paper { position: absolute; bottom: 10px; left: 5%; width: 90%; height: 90%; background: var(--paper); border-radius: 4px; box-shadow: 0 0 15px rgba(0,0,0,0.1); z-index: 2; transition: transform 1.5s var(--ease-in-out); transform-origin: bottom; }
+.envelope.opened .envelope-paper { transform: translateY(-60px); }
+
+.password-scene { display: flex; flex-direction: column; align-items: center; gap: 0.9rem; text-align: center; padding: 2rem; max-width: 480px; }
+.password-icon { width: 64px; height: 64px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #c9a876, #a68b60); display: flex; align-items: center; justify-content: center; font-size: 1.7rem; box-shadow: 0 10px 24px rgba(0,0,0,0.35); opacity: 0; animation: fadeUp 0.9s var(--ease-out) 0.1s forwards; }
+.password-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500; font-size: clamp(1.5rem, 4.5vw, 2.1rem); color: var(--ink-white); opacity: 0; animation: fadeUp 1s var(--ease-out) 0.3s forwards; }
+.password-hint { font-size: 0.85rem; letter-spacing: 0.03em; color: var(--gold-dim); opacity: 0; animation: fadeUp 1s var(--ease-out) 0.55s forwards; margin-bottom: 0.8rem; }
+.password-form { display: flex; align-items: center; gap: 0.6rem; opacity: 0; animation: fadeUp 1s var(--ease-out) 0.85s forwards; }
+.password-input { background: transparent; border: none; border-bottom: 1px solid var(--gold-dim); color: var(--ink-white); font-size: 1.4rem; letter-spacing: 0.2em; text-align: center; padding: 0.5rem 0.3rem; width: 200px; transition: border-color 0.3s; cursor: none;}
+.password-input:focus { border-color: var(--gold-soft); outline: none; }
+.password-input.shake { animation: shake 0.45s; border-color: #d18b7a; }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-8px); } 40% { transform: translateX(7px); } 60% { transform: translateX(-5px); } 80% { transform: translateX(3px); } }
+.password-submit { color: var(--gold-soft); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid var(--gold-dim); transition: background 0.3s, transform 0.3s; cursor: none;}
+.password-submit:hover { background: var(--gold-soft); color: var(--dark-3); border-color: var(--gold-soft); transform: translateX(3px); }
+.password-error { font-family: 'Cormorant Garamond', serif; font-style: italic; color: #d18b7a; font-size: 1rem; height: 1.4em; opacity: 0; transition: opacity 0.3s; }
+.password-error.visible { opacity: 1; }
+.password-success { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.6rem; color: var(--gold-soft); opacity: 0; display: none; }
+.password-success.visible { display: block; opacity: 1; animation: fadeUp 0.8s var(--ease-out) forwards; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+.main-experience { position: absolute; top:0; left:0; width: 100%; background: var(--dark-1); z-index: 10; opacity: 0; visibility: hidden; transition: opacity 1.5s var(--ease-out); }
+.main-experience.revealed { opacity: 1; visibility: visible; }
+.section { position: relative; min-height: 100vh; padding: 7rem 6vw; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
+.section-dark { background: linear-gradient(180deg, var(--dark-1) 0%, var(--dark-2) 100%); }
+.section-cream { background: var(--cream); color: var(--umber); }
+.section-eyebrow { font-size: 0.72rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 2.4rem; text-align: center; }
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+.music-player { position: fixed; bottom: 22px; left: 22px; z-index: 500; display: flex; align-items: center; gap: 0.8rem; background: rgba(43, 36, 28, 0.85); backdrop-filter: blur(14px); border: 1px solid rgba(201, 168, 118, 0.3); border-radius: 999px; padding: 0.55rem 1rem 0.55rem 0.55rem; box-shadow: 0 12px 30px rgba(0,0,0,0.3); opacity: 0; transform: translateY(14px); pointer-events: none; transition: opacity 0.6s, transform 0.6s; cursor: none;}
+.music-player.unlocked { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.music-toggle { flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%; background: var(--gold-soft); color: var(--dark-3); display: flex; align-items: center; justify-content: center; transition: background 0.3s, transform 0.2s; border: none; cursor: none;}
+.music-info { display: flex; flex-direction: column; gap: 0.15rem; min-width: 150px; }
+.music-title { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 0.92rem; color: var(--ink-white); }
+.music-artist { font-size: 0.66rem; color: var(--gold-dim); letter-spacing: 0.03em; }
+.music-mute { background: none; border: none; color: var(--gold-dim); font-size: 1.1rem; cursor: none; margin-left: 10px;}
+
+.letter-paper { max-width: 680px; width: 100%; text-align: center; }
+.letter-line.ar { font-family: 'Amiri', serif; font-size: clamp(1.3rem, 3.6vw, 1.85rem); line-height: 2.5; color: var(--ink-white); direction: rtl;}
+.letter-line.ar .seg { opacity: 0; filter: blur(4px); display: inline; transition: opacity 1.5s var(--ease-out), filter 1.5s var(--ease-out); }
+.letter-line.ar .seg.visible { opacity: 1; filter: blur(0); }
+.letter-more { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-dim); margin-top: 2rem; opacity: 0; transition: opacity 1s; }
+.btn-next { margin-top: 1.8rem; font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-style: italic; letter-spacing: 0.1em; color: var(--gold-soft); border: 1px solid var(--gold-dim); padding: 0.75rem 2.8rem; border-radius: 999px; opacity: 0; transform: translateY(10px); transition: 0.6s; cursor: none;}
+.btn-next.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.btn-next:hover { background: var(--gold-soft); color: var(--dark-3); }
+
+.counter-bgnum { position: absolute; font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 40vw; color: rgba(245, 240, 230, 0.03); z-index: 0; user-select: none; top: 50%; left: 50%; transform: translate(-50%, -50%);}
+.counter-inner { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.counter-dates { margin-bottom: 3rem; }
+.counter-date { font-family: 'Cormorant Garamond', serif; letter-spacing: 0.28em; font-size: clamp(1.1rem, 3.2vw, 1.5rem); color: var(--gold-soft); }
+.counter-arrow { font-size: 1.1rem; color: var(--gold-dim); margin: 0.6rem 0; }
+.counter-row { display: flex; gap: clamp(1rem, 4vw, 3rem); flex-wrap: wrap; justify-content: center; }
+.counter-cell { display: flex; flex-direction: column; align-items: center; min-width: 70px; }
+.counter-val { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 7vw, 4.5rem); color: var(--ink-white); font-variant-numeric: tabular-nums; line-height: 1; }
+.counter-label { font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-dim); margin-top: 0.8rem; }
+
+.timeline-content h3 { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--umber); margin-bottom: 0.5rem;}
+.timeline-track { position: relative; max-width: 700px; width: 100%; margin: 0 auto; padding-left: 3rem; margin-top: 3rem;}
+.timeline-line { position: absolute; left: 12px; top: 10px; bottom: 0; width: 1px; background: linear-gradient(var(--gold-dim), var(--gold), var(--gold-dim)); opacity: 0.5; }
+.timeline-item { position: relative; padding-bottom: 4.5rem; opacity: 0; transform: translateY(30px); transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out); }
+.timeline-item.visible { opacity: 1; transform: translateY(0); }
+.timeline-dot { position: absolute; left: -3.2rem; top: 0.5rem; width: 14px; height: 14px; border-radius: 50%; background: var(--cream); border: 2px solid var(--gold); transition: background 0.4s, box-shadow 0.4s; z-index: 2;}
+.timeline-item.visible .timeline-dot { background: var(--gold); box-shadow: 0 0 0 6px rgba(201, 168, 118, 0.2); }
+.timeline-date { display: block; font-size: 0.8rem; letter-spacing: 0.2em; color: var(--gold-dim); margin-bottom: 0.5rem; }
+
+.section-album { padding-top: 2rem; }
+.album-chapter { width: 100%; max-width: 1200px; margin-bottom: 8rem; display: flex; flex-direction: column; align-items: center;}
+.album-chapter-header { text-align: center; margin-bottom: 3rem; }
+.album-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.5rem); color: var(--umber); font-style: italic;}
+.album-meta { font-size: 0.8rem; letter-spacing: 0.15em; color: var(--gold-dim); text-transform: uppercase; margin-top: 0.5rem;}
+.album-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 3rem; align-items: center;}
+.polaroid { background: var(--paper); padding: 12px 12px 50px 12px; box-shadow: var(--shadow-soft); transition: transform 0.6s var(--ease-out), box-shadow 0.6s var(--ease-out); cursor: none; width: min(300px, 80vw); position: relative; overflow: hidden;}
+.polaroid img { width: 100%; height: 350px; object-fit: cover; filter: grayscale(20%) sepia(15%); transition: filter 0.5s; }
+.polaroid:hover { transform: scale(1.03) translateY(-10px) rotate(0deg) !important; box-shadow: 0 30px 60px rgba(0,0,0,0.15); z-index: 10;}
+.polaroid:hover img { filter: grayscale(0%) sepia(0%); }
+.polaroid::after { content: 'L × J'; position: absolute; bottom: 15px; left: 0; width: 100%; text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--umber-soft); font-size: 1.1rem;}
+
+.video-container { width: 100%; max-width: 900px; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-soft); position: relative; background: var(--dark-2);}
+.video-container video { width: 100%; display: block; opacity: 0.9;}
+.video-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; transition: opacity 0.4s;}
+.video-container:hover .video-overlay { opacity: 0; }
+
+.section-final { background: var(--true-black); text-align: center; padding: 10rem 5vw; }
+.final-text { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1.5rem, 4vw, 2.5rem); color: var(--gold-soft); margin-bottom: 2rem; line-height: 1.4;}
+.final-arabic { font-family: 'Amiri', serif; font-size: clamp(1.2rem, 3.5vw, 1.8rem); color: var(--ink-white); line-height: 2.2; direction: rtl; max-width: 800px; margin: 0 auto 3rem auto;}
+.final-sign { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 2rem; color: var(--gold); margin-bottom: 5rem;}
+.final-outro { font-family: 'Karla', sans-serif; font-weight: 300; font-size: 1rem; letter-spacing: 0.1em; color: var(--gold-dim); margin-bottom: 8rem; text-transform: uppercase;}
+.final-hero { background: var(--cream); color: var(--umber); padding: 6rem 2rem; border-radius: 8px; box-shadow: var(--shadow-soft); max-width: 600px; margin: 0 auto;}
+.final-names { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 600; margin-bottom: 1rem;}
+.final-infinity { font-size: 1.2rem; letter-spacing: 0.2em; color: var(--gold-dim); margin-bottom: 2rem;}
+.final-wish { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.8rem; color: var(--umber-soft);}
+
+.site-footer { text-align: center; padding: 3rem; background: var(--true-black); color: var(--gold-dim); font-size: 0.8rem; letter-spacing: 0.1em;}
+.heart-icon { color: #c9506a; cursor: none; display: inline-block; transition: transform 0.2s; }
+.heart-icon:hover { transform: scale(1.2); }
+
+.secret-modal { position: fixed; inset: 0; background: rgba(10,9,8,0.95); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: 0.5s; backdrop-filter: blur(5px);}
+.secret-modal.show { opacity: 1; visibility: visible; }
+.secret-text { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 2rem; color: var(--gold-soft); text-align: center; opacity: 0; transform: translateY(20px); transition: 1s 0.5s;}
+.secret-modal.show .secret-text { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+
+<body>
+
+<div class="custom-cursor" id="cursor"></div>
+<div class="thread-progress" id="progressBar"></div>
+
+<!-- Background Audio: غير كلمة helwa-el-bedayat.mp3 لاسم ملف الأغنية بتاعك لو هتشغله من جهازك -->
+<audio id="bgMusic" loop>
+  <source src="helwa-el-bedayat.mp3" type="audio/mpeg">
+</audio>
+
+<!-- STAGE 1: Riven Intro -->
+<div class="stage stage-intro active" id="stageIntro">
+  <div class="intro-inner">
+    <div class="intro-line" id="introLine1">Before you open this...</div>
+    <div class="intro-line" id="introLine2" style="margin-top: 1rem;">there's something you should know.</div>
+    <div class="intro-letter" id="introLetter"></div>
+    <button class="ready-btn" id="btnReady">Ready?</button>
+  </div>
+</div>
+
+<!-- STAGE 2: Envelope -->
+<div class="stage stage-dark" id="stageEnvelope">
+  <div class="envelope-scene">
+    <div class="envelope-caption">This was made only for you.</div>
+    <div class="envelope" id="envelopeBody">
+      <div class="envelope-shape">
+        <div class="envelope-paper"></div>
+      </div>
+      <div class="envelope-label">My Everything ❤️</div>
+    </div>
+  </div>
+</div>
+
+<!-- STAGE 3: Password -->
+<div class="stage stage-dark" id="stagePassword">
+  <div class="password-scene">
+    <div class="password-icon">🔐</div>
+    <div class="password-title">You already know the password.</div>
+    <div class="password-hint">Hint: It's something that belongs to both of you.</div>
+    <form class="password-form" id="passForm" onsubmit="event.preventDefault(); checkPassword();">
+      <input type="password" class="password-input" id="passInput" autocomplete="off">
+      <button type="submit" class="password-submit">➔</button>
+    </form>
+    <div class="password-error" id="passError">Wrong password, try again...</div>
+    <div class="password-success" id="passSuccess">I knew you'd remember. ❤️</div>
+  </div>
+</div>
+
+<!-- Global Music Player UI -->
+<div class="music-player" id="musicPlayer">
+  <button class="music-toggle" id="musicToggle">▶</button>
+  <div class="music-info">
+    <span class="music-title">Helwa El Bedayat</span>
+    <span class="music-artist">Amr Diab</span>
+  </div>
+  <button class="music-mute" id="musicMute">🔊</button>
+</div>
+
+<!-- STAGE 4: MAIN EXPERIENCE -->
+<div class="main-experience" id="mainExperience">
+  
+  <section class="section section-dark" id="secLetter">
+    <div class="letter-paper">
+      <div class="letter-line ar" id="arabicLetter"></div>
+      <div class="letter-more" id="letterMore">There's more...</div>
+      <button class="btn-next" id="btnNextSection">Next</button>
+    </div>
+  </section>
+
+  <section class="section section-dark section-counter" id="secCounter">
+    <div class="counter-bgnum">1</div>
+    <div class="counter-inner reveal">
+      <div class="section-eyebrow">Our Time Together</div>
+      <div class="counter-dates">
+        <div class="counter-date">18.08.2025</div>
+        <div class="counter-arrow">↓</div>
+        <div class="counter-date">18.08.2026</div>
+      </div>
+      <div class="counter-row">
+        <div class="counter-cell"><span class="counter-val" id="c-mo">00</span><span class="counter-label">Months</span></div>
+        <div class="counter-cell"><span class="counter-val" id="c-d">00</span><span class="counter-label">Days</span></div>
+        <div class="counter-cell"><span class="counter-val" id="c-h">00</span><span class="counter-label">Hours</span></div>
+        <div class="counter-cell"><span class="counter-val" id="c-m">00</span><span class="counter-label">Minutes</span></div>
+        <div class="counter-cell"><span class="counter-val" id="c-s">00</span><span class="counter-label">Seconds</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-cream">
+    <div class="section-eyebrow">The Journey</div>
+    <div class="timeline-track">
+      <div class="timeline-line"></div>
+      <div class="timeline-item reveal"><div class="timeline-dot"></div><span class="timeline-date">18.08.2025</span><div class="timeline-content"><h3>The day everything changed ❤️</h3></div></div>
+      <div class="timeline-item reveal"><div class="timeline-dot"></div><span class="timeline-date">31.08.2025</span><div class="timeline-content"><h3>The first adventure ✨</h3></div></div>
+      <div class="timeline-item reveal"><div class="timeline-dot"></div><span class="timeline-date">21.03.2026</span><div class="timeline-content"><h3>A day to remember 🌍</h3></div></div>
+    </div>
+  </section>
+
+  <section class="section section-cream section-album">
+    <div class="album-chapter reveal">
+      <div class="album-chapter-header">
+        <div class="album-meta">Chapter 01</div><h2 class="album-title">The Beginning ✨</h2><div class="album-meta" style="margin-top:10px;">31.08.2025</div>
+      </div>
+      <div class="album-grid">
+        <div class="polaroid" style="--rand: 0.5;"><img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=400" alt="Memory"></div>
+        <div class="polaroid" style="--rand: -0.2;"><img src="https://images.unsplash.com/photo-1494774157365-9e04c6720e47?auto=format&fit=crop&q=80&w=400" alt="Memory"></div>
+        <div class="polaroid" style="--rand: 0.8;"><img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&q=80&w=400" alt="Memory"></div>
+      </div>
+    </div>
+
+    <div class="album-chapter reveal">
+      <div class="album-chapter-header">
+        <div class="album-meta">Chapter 02</div><h2 class="album-title">The One to Remember 🌍</h2><div class="album-meta" style="margin-top:10px;">21.03.2026</div>
+      </div>
+      <div class="album-grid">
+        <div class="polaroid" style="--rand: -0.6;"><img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80&w=400" alt="Memory"></div>
+        <div class="polaroid" style="--rand: 0.1;"><img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&q=80&w=400" alt="Memory"></div>
+        <div class="polaroid" style="--rand: 0.9;"><img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=400" alt="Memory"></div>
+        <div class="polaroid" style="--rand: -0.4;"><img src="https://images.unsplash.com/photo-1474552226712-ac0f0961a954?auto=format&fit=crop&q=80&w=400" alt="Memory"></div>
+        <div class="polaroid" style="--rand: 0.4;"><img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=400" alt="Memory"></div>
+      </div>
+    </div>
+
+    <div class="album-chapter reveal">
+      <div class="album-chapter-header">
+        <div class="album-meta">Chapter 03</div><h2 class="album-title">Not The End ♾️</h2>
+      </div>
+      <div class="album-grid">
+        <div class="polaroid" style="--rand: 0.7;"><img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&q=80&w=400" alt="Memory"></div>
+        <div class="polaroid" style="--rand: -0.5;"><img src="https://images.unsplash.com/photo-1490260400179-d656f04de422?auto=format&fit=crop&q=80&w=400" alt="Memory"></div>
+        <div class="polaroid" style="--rand: 0.2;"><img src="https://images.unsplash.com/photo-1538356111053-748a48e1acb8?auto=format&fit=crop&q=80&w=400" alt="Memory"></div>
+        <div class="polaroid" style="--rand: -0.8;"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=400" alt="Memory"></div>
+        <div class="polaroid" style="--rand: 0.3;"><img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80&w=400" alt="Memory"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-cream">
+    <div class="section-eyebrow">Moments in motion</div>
+    <div class="video-container reveal">
+      <video loop muted playsinline autoplay>
+        <source src="https://cdn.pixabay.com/video/2021/08/11/84700-588147551_tiny.mp4" type="video/mp4">
+      </video>
+      <div class="video-overlay"><svg width="48" height="48" viewBox="0 0 24 24" fill="var(--gold-soft)"><path d="M8 5v14l11-7z"/></svg></div>
+    </div>
+  </section>
+
+  <section class="section-final">
+    <div class="final-text reveal">If I had to choose one thing from this whole year...</div>
+    <div class="final-text reveal" style="margin-bottom: 4rem;">I'd choose you. ❤️</div>
+    <div class="final-arabic reveal">كل سنة وانتي معايا وعقبال م تكوني ف بيتي ونقضي احلي ايام عمرنا وسنين كتير مع بعض ❤️🌍</div>
+    <div class="final-sign reveal">Savo 🐊</div>
+    <div class="final-outro reveal"><p style="margin-bottom: 0.5rem;">This isn't the end of our story.</p><p>it's just the first chapter.</p></div>
+    <div class="final-hero reveal">
+      <div class="final-names">Lala × Joja</div>
+      <div class="final-infinity">18.08.2025 → ∞</div>
+      <div class="final-wish">Happy first year, my everything. ❤️</div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    Made by Riven <span class="heart-icon" id="easterEggHeart">❤️</span>
+  </footer>
+
+</div>
+
+<div class="secret-modal" id="secretModal">
+  <div class="secret-text">
+    <p style="font-size:1.2rem; margin-bottom:1rem; color:var(--gold-dim);">Okay... you found something I didn't tell you about.</p>
+    <p>He really, really loves you. ❤️</p>
+  </div>
+</div>
+
+  <script>
+// 1. Custom Cursor Logic
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', (e) => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+});
+const interactiveEls = document.querySelectorAll('button, .envelope, .polaroid, input, .music-toggle, .heart-icon');
+interactiveEls.forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+});
+
+// Scroll Progress
+window.addEventListener('scroll', () => {
+  const scrollPx = document.documentElement.scrollTop;
+  const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = scrollPx / winHeightPx;
+  document.getElementById('progressBar').style.transform = `scaleX(${scrolled})`;
+});
+
+// 2. Intro Sequence
+const textToType = "أنا Riven مصمم الموقع ده ومش هطول عليكي بس حبيت أقولك حاجة واحدة قبل ما تبدي تشوفي ال website 😂❤️\nأن الشخص اللي طلب مني أعملهولك بيحبك أوي لدرجة إنه خلاني اعملك website كامل عشانك.";
+const typeContainer = document.getElementById('introLetter');
+
+setTimeout(() => { document.getElementById('introLine1').style.opacity = '1'; }, 1000);
+setTimeout(() => { document.getElementById('introLine2').style.opacity = '1'; }, 3000);
+
+setTimeout(() => {
+  let i = 0;
+  typeContainer.innerHTML = '<span id="typedText"></span><span class="typed-cursor"></span>';
+  const textSpan = document.getElementById('typedText');
+  
+  function typeWriter() {
+    if (i < textToType.length) {
+      if(textToType.charAt(i) === '\n') {
+        textSpan.innerHTML += '<br><br>';
+      } else {
+        textSpan.innerHTML += textToType.charAt(i);
+      }
+      i++;
+      setTimeout(typeWriter, 40);
+    } else {
+      setTimeout(() => { document.getElementById('btnReady').classList.add('visible'); }, 1000);
+    }
+  }
+  typeWriter();
+}, 5500);
+
+// Transition: Intro -> Envelope
+document.getElementById('btnReady').addEventListener('click', () => {
+  document.getElementById('stageIntro').classList.remove('active');
+  document.getElementById('stageIntro').classList.add('leaving');
+  document.getElementById('stageEnvelope').classList.add('active');
+});
+
+// Transition: Envelope -> Password
+document.getElementById('envelopeBody').addEventListener('click', function() {
+  this.classList.add('opened');
+  setTimeout(() => {
+    document.getElementById('stageEnvelope').classList.remove('active');
+    document.getElementById('stageEnvelope').classList.add('leaving');
+    document.getElementById('stagePassword').classList.add('active');
+    setTimeout(()=> { document.getElementById('passInput').focus(); }, 1000);
+  }, 2000);
+});
+
+// 3. Password Logic
+function checkPassword() {
+  const input = document.getElementById('passInput');
+  const errorMsg = document.getElementById('passError');
+  const successMsg = document.getElementById('passSuccess');
+  const form = document.getElementById('passForm');
+  
+  const attempt = input.value.trim().toLowerCase();
+  
+  if (btoa(attempt) === 'bG92ZQ==') { // 'love'
+    errorMsg.classList.remove('visible');
+    form.style.display = 'none';
+    successMsg.classList.add('visible');
+    setTimeout(startMainExperience, 2000);
+  } else {
+    input.classList.add('shake');
+    errorMsg.classList.add('visible');
+    setTimeout(() => { input.classList.remove('shake'); }, 500);
+  }
+}
+
+// 4. Main Experience Init
+const audio = document.getElementById('bgMusic');
+function startMainExperience() {
+  document.getElementById('stagePassword').classList.remove('active');
+  document.getElementById('stagePassword').classList.add('leaving');
+  
+  const main = document.getElementById('mainExperience');
+  main.classList.add('revealed');
+  
+  const player = document.getElementById('musicPlayer');
+  player.classList.add('unlocked');
+  audio.play().catch(e => console.log("Audio autoplay prevented"));
+  
+  animateArabicLetter();
+}
+
+// Music Controls
+document.getElementById('musicToggle').addEventListener('click', function() {
+  if (audio.paused) { audio.play(); this.innerHTML = '⏸'; } 
+  else { audio.pause(); this.innerHTML = '▶'; }
+});
+document.getElementById('musicMute').addEventListener('click', function() {
+  audio.muted = !audio.muted;
+  this.innerHTML = audio.muted ? '🔇' : '🔊';
+});
+
+// Love Letter Animation
+const letterText = "كل سنة وانتي معايا وعقبال م تكوني ف بيتي ونقضي احلى أيام عمرنا وسنين كتير مع بعض ❤️🌍";
+function animateArabicLetter() {
+  const container = document.getElementById('arabicLetter');
+  const words = letterText.split(' ');
+  container.innerHTML = '';
+  
+  words.forEach((word, index) => {
+    const span = document.createElement('span');
+    span.className = 'seg';
+    span.innerText = word + ' ';
+    container.appendChild(span);
+    setTimeout(() => { span.classList.add('visible'); }, 500 + (index * 200));
+  });
+
+  setTimeout(() => {
+    document.getElementById('letterMore').classList.add('visible');
+    document.getElementById('btnNextSection').classList.add('visible');
+  }, 500 + (words.length * 200) + 1000);
+}
+
+document.getElementById('btnNextSection').addEventListener('click', () => {
+  document.getElementById('secCounter').scrollIntoView({ behavior: 'smooth' });
+});
+
+// 5. Anniversary Counter Logic
+const targetDate = new Date("2026-08-18T00:00:00").getTime();
+function updateCounter() {
+  const now = new Date().getTime();
+  const diff = targetDate - now;
+
+  if (diff > 0) {
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    const months = Math.floor(days / 30.44);
+    const remDays = Math.floor(days % 30.44);
+
+    document.getElementById('c-mo').innerText = String(months).padStart(2, '0');
+    document.getElementById('c-d').innerText = String(remDays).padStart(2, '0');
+    document.getElementById('c-h').innerText = String(hours).padStart(2, '0');
+    document.getElementById('c-m').innerText = String(minutes).padStart(2, '0');
+    document.getElementById('c-s').innerText = String(seconds).padStart(2, '0');
+  } else {
+    document.getElementById('c-mo').innerText = "00";
+    document.getElementById('c-d').innerText = "00";
+    document.getElementById('c-h').innerText = "00";
+    document.getElementById('c-m').innerText = "00";
+    document.getElementById('c-s').innerText = "00";
+    document.querySelector('.counter-bgnum').innerText = "1";
+    document.querySelector('.section-eyebrow').innerText = "ONE YEAR TOGETHER ❤️";
+  }
+}
+setInterval(updateCounter, 1000);
+updateCounter();
+
+// Scroll Reveals using Intersection Observer
+const revealElements = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting) { entry.target.classList.add('visible'); }
+  });
+}, { threshold: 0.15 });
+revealElements.forEach(el => revealObserver.observe(el));
+
+// 6. Easter Egg
+let heartClicks = 0;
+document.getElementById('easterEggHeart').addEventListener('click', function() {
+  heartClicks++;
+  if (heartClicks === 5) {
+    document.getElementById('secretModal').classList.add('show');
+    setTimeout(() => { document.getElementById('secretModal').classList.remove('show'); heartClicks = 0; }, 6000);
+  }
+});
+</script>
+</body>
+</html>
